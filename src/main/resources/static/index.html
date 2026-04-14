@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ride Hailing App</title>
+    <style>
+        body {
+            font-family: Arial;
+            padding: 20px;
+            background: #f4f6f8;
+        }
+
+        h2 { color: #333; }
+
+        .card {
+            background: white;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        input, button, select {
+            padding: 8px;
+            margin: 5px;
+        }
+
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover { background: #0056b3; }
+
+        #status { font-weight: bold; color: green; }
+    </style>
+</head>
+
+<body>
+
+<h1>Ride Hailing Dashboard</h1>
+
+<div class="card">
+    <h2>Create Driver</h2>
+    <input type="number" id="driverId" placeholder="Driver ID">
+    <input type="text" id="driverName" placeholder="Name">
+    <input type="text" id="phone" placeholder="Phone Number">
+    <button onclick="createDriver()">Create</button>
+</div>
+
+<div class="card">
+    <h2>All Drivers</h2>
+    <button onclick="getAllDrivers()">Fetch Drivers</button>
+    <ul id="driverList"></ul>
+</div>
+
+<div class="card">
+    <h2>Update Driver Status</h2>
+    <input type="number" id="statusDriverId" placeholder="Driver ID">
+    <select id="driverStatus">
+        <option value="AVAILABLE">AVAILABLE</option>
+        <option value="BUSY">BUSY</option>
+        <option value="OFFLINE">OFFLINE</option>
+    </select>
+    <button onclick="updateStatus()">Update</button>
+</div>
+
+<div class="card">
+    <h2>Update Driver Location</h2>
+    <input type="number" id="locDriverId" placeholder="Driver ID">
+    <input type="number" id="lat" placeholder="Latitude">
+    <input type="number" id="lon" placeholder="Longitude">
+    <button onclick="updateLocation()">Update</button>
+</div>
+
+<div class="card">
+    <h2>Create Ride</h2>
+    <input type="number" id="riderId" placeholder="Rider ID">
+    <input type="number" id="pickupLat" placeholder="Pickup Lat">
+    <input type="number" id="pickupLon" placeholder="Pickup Lon">
+    <input type="number" id="dropLat" placeholder="Drop Lat">
+    <input type="number" id="dropLon" placeholder="Drop Lon">
+    <button onclick="createRide()">Create Ride</button>
+</div>
+
+<div class="card">
+    <h2>Accept Ride</h2>
+    <input type="number" id="acceptDriverId" placeholder="Driver ID">
+    <input type="number" id="acceptRideId" placeholder="Ride ID">
+    <button onclick="acceptRide()">Accept</button>
+</div>
+
+<div class="card">
+    <h2>Ride Status</h2>
+    <input type="number" id="rideId" placeholder="Ride ID">
+    <button onclick="getRide()">Get Status</button>
+    <p>Status: <span id="status">-</span></p>
+    <p>Driver: <span id="driver">-</span></p>
+</div>
+
+<div class="card">
+    <h2>Current Driver for Ride</h2>
+    <input type="number" id="currentRideId" placeholder="Ride ID">
+    <button onclick="getCurrentDriver()">Check</button>
+    <p>Current Driver: <span id="currentDriver">-</span></p>
+</div>
+
+<div class="card">
+    <h2>End Trip</h2>
+    <input type="number" id="endRideId" placeholder="Ride ID">
+    <button onclick="endTrip()">End Trip</button>
+    <p>Fare: <span id="fare">-</span></p>
+</div>
+
+<div class="card">
+    <h2>Make Payment</h2>
+    <input type="number" id="paymentRideId" placeholder="Ride ID">
+    <button onclick="makePayment()">Pay</button>
+    <p id="paymentStatus">-</p>
+</div>
+
+<script>
+
+    const BASE_URL = "http://localhost:8080";
+
+    async function createDriver() {
+        const id = document.getElementById("driverId").value;
+        const name = document.getElementById("driverName").value;
+        const phone = document.getElementById("phone").value;
+
+        const res = await fetch(`${BASE_URL}/v1/drivers`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                id: Number(id),
+                name: name,
+                phoneNumber: phone
+            })
+        });
+
+        const data = await res.json();
+        alert("Driver created: " + data.name);
+    }
+
+    async function getAllDrivers() {
+        const res = await fetch(`${BASE_URL}/v1/drivers`);
+        const drivers = await res.json();
+
+        const list = document.getElementById("driverList");
+        list.innerHTML = "";
+
+        drivers.forEach(d => {
+            const li = document.createElement("li");
+
+            li.innerText = `ID: ${d.id} | Name: ${d.name} | Phone: ${d.phoneNumber} | Status: ${d.status}`;
+
+            li.style.color =
+                d.status === "AVAILABLE" ? "green" :
+                    d.status === "BUSY" ? "orange" : "gray";
+
+            list.appendChild(li);
+        });
+    }
+
+    async function updateStatus() {
+        const id = document.getElementById("statusDriverId").value;
+        const status = document.getElementById("driverStatus").value;
+
+        await fetch(`${BASE_URL}/v1/drivers/${id}/status?status=${status}`, {
+            method: "POST"
+        });
+
+        alert("Status updated");
+    }
+
+    async function updateLocation() {
+        const id = document.getElementById("locDriverId").value;
+        const lat = document.getElementById("lat").value;
+        const lon = document.getElementById("lon").value;
+
+        await fetch(`${BASE_URL}/v1/drivers/${id}/location?lat=${lat}&lon=${lon}`, {
+            method: "POST"
+        });
+
+        alert("Location updated");
+    }
+
+    async function createRide() {
+        const data = {
+            riderId: Number(document.getElementById("riderId").value),
+            pickupLat: Number(document.getElementById("pickupLat").value),
+            pickupLon: Number(document.getElementById("pickupLon").value),
+            dropLat: Number(document.getElementById("dropLat").value),
+            dropLon: Number(document.getElementById("dropLon").value)
+        };
+
+        const res = await fetch(`${BASE_URL}/v1/rides`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        });
+
+        const ride = await res.json();
+
+        document.getElementById("rideId").value = ride.id;
+        document.getElementById("currentRideId").value = ride.id;
+        document.getElementById("endRideId").value = ride.id;
+        document.getElementById("paymentRideId").value = ride.id;
+
+        alert("Ride Created ID: " + ride.id);
+
+        await getRide();
+        await getCurrentDriver();
+    }
+
+    async function acceptRide() {
+        const driverId = document.getElementById("acceptDriverId").value;
+        const rideId = document.getElementById("acceptRideId").value;
+
+        const res = await fetch(`${BASE_URL}/v1/drivers/${driverId}/accept?rideId=${rideId}`, {
+            method: "POST"
+        });
+
+        const text = await res.text();
+        alert("Result: " + text);
+
+        await getRide();
+        await getCurrentDriver();
+    }
+
+    async function getRide() {
+        const rideId = document.getElementById("rideId").value;
+
+        if (!rideId) return;
+
+        const res = await fetch(`${BASE_URL}/v1/rides/${rideId}`);
+
+        if (!res.ok) {
+            document.getElementById("status").innerText = "Ride not found";
+            document.getElementById("driver").innerText = "-";
+            return;
+        }
+
+        const data = await res.json();
+
+        document.getElementById("status").innerText = data.status;
+        document.getElementById("driver").innerText = data.driverId || "Not assigned";
+    }
+
+    async function getCurrentDriver() {
+        const rideId = document.getElementById("currentRideId").value;
+
+        if (!rideId) return;
+
+        const res = await fetch(`${BASE_URL}/v1/rides/${rideId}/current-driver`);
+        const data = await res.json();
+
+        if (!data.hasDriver) {
+            document.getElementById("currentDriver").innerText = "No active driver";
+        } else {
+            document.getElementById("currentDriver").innerText = data.currentDriverId;
+        }
+    }
+
+    async function endTrip() {
+        const rideId = document.getElementById("endRideId").value;
+
+        if (!rideId) return;
+
+        const res = await fetch(`${BASE_URL}/v1/trips/${rideId}/end`, {
+            method: "POST"
+        });
+
+        if (!res.ok) {
+            alert("Failed to end trip");
+            return;
+        }
+
+        const data = await res.json();
+        document.getElementById("fare").innerText = data.fare;
+
+        await getRide();
+        await getCurrentDriver();
+    }
+
+    async function makePayment() {
+        const rideId = document.getElementById("paymentRideId").value;
+
+        if (!rideId) return;
+
+        const res = await fetch(`${BASE_URL}/v1/payments?rideId=${rideId}`, {
+            method: "POST"
+        });
+
+        const text = await res.text();
+        document.getElementById("paymentStatus").innerText = text;
+    }
+
+</script>
+
+</body>
+</html>

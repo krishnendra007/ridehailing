@@ -1,0 +1,74 @@
+2026-04-14T16:07:39,245+0530 [14308 1] com.newrelic INFO: Writing to New Relic log file: C:\Users\Admin\Downloads\ride-hailing\gocomet\ridehailing\newrelic\logs\newrelic_agent.log
+2026-04-14T16:07:39,245+0530 [14308 1] com.newrelic INFO: JRE vendor Oracle Corporation version 21.0.10
+2026-04-14T16:07:39,245+0530 [14308 1] com.newrelic INFO: JVM vendor Oracle Corporation Java HotSpot(TM) 64-Bit Server VM version 21.0.10+8-LTS-217
+2026-04-14T16:07:39,245+0530 [14308 1] com.newrelic INFO: OS Windows 11 version 10.0 arch amd64
+2026-04-14T16:07:39,246+0530 [14308 1] com.newrelic INFO: Agent Host: DESKTOP-6JEHBH4 IP: 192.168.1.12
+2026-04-14T16:07:39,246+0530 [14308 1] com.newrelic INFO: New Relic Agent v9.2.0 is initializing...
+2026-04-14T16:07:39,264+0530 [14308 1] com.newrelic INFO: AgentCollectionFactory: Using Caffeine 3.x for Java 21
+2026-04-14T16:07:39,995+0530 [14308 32] com.newrelic INFO: Instrumentation com.newrelic.instrumentation.jdbc-resultset is disabled. Skipping.
+2026-04-14T16:07:41,791+0530 [14308 1] com.newrelic INFO: Started Adaptive Sampler with sampling target 120 and report period 60 seconds.
+2026-04-14T16:07:41,792+0530 [14308 1] com.newrelic INFO: The full granularity root sampler was configured to use the adaptive sampler type.
+2026-04-14T16:07:41,792+0530 [14308 1] com.newrelic INFO: The full granularity remote_parent_sampled sampler was configured to use the adaptive sampler type.
+2026-04-14T16:07:41,793+0530 [14308 1] com.newrelic INFO: The full granularity remote_parent_not_sampled sampler was configured to use the adaptive sampler type.
+2026-04-14T16:07:41,795+0530 [14308 1] com.newrelic.agent.RPMServiceManagerImpl INFO: Configured to connect to New Relic at collector.newrelic.com:443
+2026-04-14T16:07:42,026+0530 [14308 1] com.newrelic INFO: Setting audit_mode to false
+2026-04-14T16:07:42,142+0530 [14308 1] com.newrelic.agent.config.ConfigServiceImpl INFO: Configuration file is C:\Users\Admin\Downloads\ride-hailing\gocomet\ridehailing\newrelic\.\newrelic.yml
+2026-04-14T16:07:42,146+0530 [14308 1] com.newrelic INFO: New Relic Agent v9.2.0 has started
+2026-04-14T16:07:42,146+0530 [14308 1] com.newrelic INFO: Agent class loader: com.newrelic.bootstrap.BootstrapAgent$JVMAgentClassLoader@3f102e87
+2026-04-14T16:07:42,146+0530 [14308 1] com.newrelic INFO: Premain startup complete in 3,924ms
+2026-04-14T16:07:42,148+0530 [14308 1] com.newrelic INFO: New Relic Security is completely disabled by one of the user provided config `security.enabled`, `security.agent.enabled` or `high_security`. Not loading security capabilities.
+2026-04-14T16:07:45,942+0530 [14308 60] com.newrelic INFO: Server Info: Apache Tomcat/10.1.53
+2026-04-14T16:07:52,151+0530 [14308 55] com.newrelic INFO: Host name is DESKTOP-6JEHBH4, display host DESKTOP-6JEHBH4 for application ridehailing
+2026-04-14T16:07:52,152+0530 [14308 55] com.newrelic INFO: New Relic JFR Monitor is disabled: JFR config has not been enabled in the Java agent.
+2026-04-14T16:07:53,908+0530 [14308 55] com.newrelic INFO: Collector redirection to collector.newrelic.com:443
+2026-04-14T16:07:56,080+0530 [14308 55] com.newrelic INFO: Max payload size is 1,000,000 bytes
+2026-04-14T16:07:56,081+0530 [14308 55] com.newrelic INFO: Agent run id: BaH0lLOhiTrnAHk5OyRWewxp3hlEAAIBAAAnIQEAADfkAgQkVnsJAwAFOS4yLjAAD0RFU0tUT1AtNkpFSEJINAALcmlkZWhhaWxpbmc
+2026-04-14T16:07:56,081+0530 [14308 55] com.newrelic INFO: Agent 14308@DESKTOP-6JEHBH4/ridehailing connected to collector.newrelic.com:443
+2026-04-14T16:07:56,082+0530 [14308 55] com.newrelic INFO: Reporting to: https://rpm.newrelic.com/accounts/7944507/applications/609647369
+2026-04-14T16:07:56,083+0530 [14308 55] com.newrelic INFO: Using default collector host: collector.newrelic.com
+2026-04-14T16:07:56,083+0530 [14308 55] com.newrelic INFO: Using default metric ingest URI: https://metric-api.newrelic.com/metric/v1
+2026-04-14T16:07:56,083+0530 [14308 55] com.newrelic INFO: Using default event ingest URI: https://insights-collector.newrelic.com/v1/accounts/events
+2026-04-14T16:07:56,085+0530 [14308 55] com.newrelic INFO: Using default collector host: collector.newrelic.com
+2026-04-14T16:07:56,086+0530 [14308 55] com.newrelic INFO: Using default metric ingest URI: https://metric-api.newrelic.com/metric/v1
+2026-04-14T16:07:56,086+0530 [14308 55] com.newrelic INFO: Using default event ingest URI: https://insights-collector.newrelic.com/v1/accounts/events
+2026-04-14T16:07:56,893+0530 [14308 55] com.newrelic INFO: Real user monitoring is enabled for application ridehailing. Auto instrumentation is enabled.
+2026-04-14T16:07:56,893+0530 [14308 55] com.newrelic INFO: Updating shared Adaptive Sampler sampling target to 120
+2026-04-14T16:07:56,894+0530 [14308 55] com.newrelic INFO: New Relic JFR Monitor is disabled: JFR config has not been enabled in the Java agent.
+2026-04-14T16:15:58,224+0530 [14308 29] com.newrelic.agent.core.CoreServiceImpl INFO: JVM is shutting down
+2026-04-14T16:16:33,196+0530 [12140 1] com.newrelic INFO: Writing to New Relic log file: C:\Users\Admin\Downloads\ride-hailing\gocomet\ridehailing\newrelic\logs\newrelic_agent.log
+2026-04-14T16:16:33,197+0530 [12140 1] com.newrelic INFO: JRE vendor Oracle Corporation version 21.0.10
+2026-04-14T16:16:33,197+0530 [12140 1] com.newrelic INFO: JVM vendor Oracle Corporation Java HotSpot(TM) 64-Bit Server VM version 21.0.10+8-LTS-217
+2026-04-14T16:16:33,197+0530 [12140 1] com.newrelic INFO: OS Windows 11 version 10.0 arch amd64
+2026-04-14T16:16:33,197+0530 [12140 1] com.newrelic INFO: Agent Host: DESKTOP-6JEHBH4 IP: 192.168.1.12
+2026-04-14T16:16:33,197+0530 [12140 1] com.newrelic INFO: New Relic Agent v9.2.0 is initializing...
+2026-04-14T16:16:33,218+0530 [12140 1] com.newrelic INFO: AgentCollectionFactory: Using Caffeine 3.x for Java 21
+2026-04-14T16:16:33,863+0530 [12140 32] com.newrelic INFO: Instrumentation com.newrelic.instrumentation.jdbc-resultset is disabled. Skipping.
+2026-04-14T16:16:35,315+0530 [12140 1] com.newrelic INFO: Started Adaptive Sampler with sampling target 120 and report period 60 seconds.
+2026-04-14T16:16:35,316+0530 [12140 1] com.newrelic INFO: The full granularity root sampler was configured to use the adaptive sampler type.
+2026-04-14T16:16:35,316+0530 [12140 1] com.newrelic INFO: The full granularity remote_parent_sampled sampler was configured to use the adaptive sampler type.
+2026-04-14T16:16:35,316+0530 [12140 1] com.newrelic INFO: The full granularity remote_parent_not_sampled sampler was configured to use the adaptive sampler type.
+2026-04-14T16:16:35,319+0530 [12140 1] com.newrelic.agent.RPMServiceManagerImpl INFO: Configured to connect to New Relic at collector.newrelic.com:443
+2026-04-14T16:16:35,531+0530 [12140 1] com.newrelic INFO: Setting audit_mode to false
+2026-04-14T16:16:35,654+0530 [12140 1] com.newrelic.agent.config.ConfigServiceImpl INFO: Configuration file is C:\Users\Admin\Downloads\ride-hailing\gocomet\ridehailing\newrelic\.\newrelic.yml
+2026-04-14T16:16:35,657+0530 [12140 1] com.newrelic INFO: New Relic Agent v9.2.0 has started
+2026-04-14T16:16:35,657+0530 [12140 1] com.newrelic INFO: Agent class loader: com.newrelic.bootstrap.BootstrapAgent$JVMAgentClassLoader@3f102e87
+2026-04-14T16:16:35,658+0530 [12140 1] com.newrelic INFO: Premain startup complete in 3,985ms
+2026-04-14T16:16:35,659+0530 [12140 1] com.newrelic INFO: New Relic Security is completely disabled by one of the user provided config `security.enabled`, `security.agent.enabled` or `high_security`. Not loading security capabilities.
+2026-04-14T16:16:39,433+0530 [12140 60] com.newrelic INFO: Server Info: Apache Tomcat/10.1.53
+2026-04-14T16:16:45,681+0530 [12140 55] com.newrelic INFO: Host name is DESKTOP-6JEHBH4, display host DESKTOP-6JEHBH4 for application ridehailing
+2026-04-14T16:16:45,683+0530 [12140 55] com.newrelic INFO: New Relic JFR Monitor is disabled: JFR config has not been enabled in the Java agent.
+2026-04-14T16:16:47,349+0530 [12140 55] com.newrelic INFO: Collector redirection to collector.newrelic.com:443
+2026-04-14T16:16:49,574+0530 [12140 55] com.newrelic INFO: Max payload size is 1,000,000 bytes
+2026-04-14T16:16:49,574+0530 [12140 55] com.newrelic INFO: Agent run id: BQhAXa69WQJYAHk5OyRWewxp3htgAAIBAAAnIQEAAC9sAgQkVnsJAwAFOS4yLjAAD0RFU0tUT1AtNkpFSEJINAALcmlkZWhhaWxpbmc
+2026-04-14T16:16:49,575+0530 [12140 55] com.newrelic INFO: Agent 12140@DESKTOP-6JEHBH4/ridehailing connected to collector.newrelic.com:443
+2026-04-14T16:16:49,575+0530 [12140 55] com.newrelic INFO: Reporting to: https://rpm.newrelic.com/accounts/7944507/applications/609647369
+2026-04-14T16:16:49,576+0530 [12140 55] com.newrelic INFO: Using default collector host: collector.newrelic.com
+2026-04-14T16:16:49,576+0530 [12140 55] com.newrelic INFO: Using default metric ingest URI: https://metric-api.newrelic.com/metric/v1
+2026-04-14T16:16:49,576+0530 [12140 55] com.newrelic INFO: Using default event ingest URI: https://insights-collector.newrelic.com/v1/accounts/events
+2026-04-14T16:16:49,578+0530 [12140 55] com.newrelic INFO: Using default collector host: collector.newrelic.com
+2026-04-14T16:16:49,578+0530 [12140 55] com.newrelic INFO: Using default metric ingest URI: https://metric-api.newrelic.com/metric/v1
+2026-04-14T16:16:49,578+0530 [12140 55] com.newrelic INFO: Using default event ingest URI: https://insights-collector.newrelic.com/v1/accounts/events
+2026-04-14T16:16:50,233+0530 [12140 55] com.newrelic INFO: Real user monitoring is enabled for application ridehailing. Auto instrumentation is enabled.
+2026-04-14T16:16:50,233+0530 [12140 55] com.newrelic INFO: Updating shared Adaptive Sampler sampling target to 120
+2026-04-14T16:16:50,233+0530 [12140 55] com.newrelic INFO: New Relic JFR Monitor is disabled: JFR config has not been enabled in the Java agent.
+2026-04-14T16:19:04,067+0530 [12140 29] com.newrelic.agent.core.CoreServiceImpl INFO: JVM is shutting down
