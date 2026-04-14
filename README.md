@@ -175,7 +175,15 @@ POST /v1/payments - Make payment
 
   ![Untitled Diagram](https://github.com/user-attachments/assets/69a25813-b993-402e-b5e3-e6f3be4b9af1)
 
+## New Relic Dashboards:
 
+<img width="1916" height="1018" alt="newralic1" src="https://github.com/user-attachments/assets/b7971440-f9db-43ce-ab94-e7cc4be4b813" />
+<img width="1918" height="1011" alt="image" src="https://github.com/user-attachments/assets/a1d57378-a014-49d5-bf27-95ac0a159980" />
+<img width="1918" height="1015" alt="image" src="https://github.com/user-attachments/assets/7034535e-a19b-437e-b03b-6a1baf83a0fa" />
+<img width="1918" height="978" alt="image" src="https://github.com/user-attachments/assets/87488689-e5e9-420d-b738-190153db4136" />
+
+### documentation link:
+https://drive.google.com/drive/folders/1J2JtfQZd0UFnX04OCrnz143rQJSE3G4b?usp=drive_link
 ---
 
 ## Author
