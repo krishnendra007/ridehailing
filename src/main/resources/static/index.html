@@ -9,9 +9,7 @@
             background: #f4f6f8;
         }
 
-        h2 {
-            color: #333;
-        }
+        h2 { color: #333; }
 
         .card {
             background: white;
@@ -21,7 +19,7 @@
             box-shadow: 0 2px 6px rgba(0,0,0,0.1);
         }
 
-        input, button {
+        input, button, select {
             padding: 8px;
             margin: 5px;
         }
@@ -33,14 +31,9 @@
             cursor: pointer;
         }
 
-        button:hover {
-            background: #0056b3;
-        }
+        button:hover { background: #0056b3; }
 
-        #status {
-            font-weight: bold;
-            color: green;
-        }
+        #status { font-weight: bold; color: green; }
     </style>
 </head>
 
@@ -48,14 +41,31 @@
 
 <h1>🚖 Ride Hailing Dashboard</h1>
 
-<!-- DRIVER CREATION -->
 <div class="card">
     <h2>Create Driver</h2>
     <input type="number" id="driverId" placeholder="Driver ID">
+    <input type="text" id="driverName" placeholder="Name">
+    <input type="text" id="phone" placeholder="Phone Number">
     <button onclick="createDriver()">Create</button>
 </div>
 
-<!-- DRIVER LOCATION -->
+<div class="card">
+    <h2>All Drivers</h2>
+    <button onclick="getAllDrivers()">Fetch Drivers</button>
+    <ul id="driverList"></ul>
+</div>
+
+<div class="card">
+    <h2>Update Driver Status</h2>
+    <input type="number" id="statusDriverId" placeholder="Driver ID">
+    <select id="driverStatus">
+        <option value="AVAILABLE">AVAILABLE</option>
+        <option value="BUSY">BUSY</option>
+        <option value="OFFLINE">OFFLINE</option>
+    </select>
+    <button onclick="updateStatus()">Update</button>
+</div>
+
 <div class="card">
     <h2>Update Driver Location</h2>
     <input type="number" id="locDriverId" placeholder="Driver ID">
@@ -64,7 +74,6 @@
     <button onclick="updateLocation()">Update</button>
 </div>
 
-<!-- CREATE RIDE -->
 <div class="card">
     <h2>Create Ride</h2>
     <input type="number" id="riderId" placeholder="Rider ID">
@@ -75,7 +84,13 @@
     <button onclick="createRide()">Create Ride</button>
 </div>
 
-<!-- RIDE STATUS -->
+<div class="card">
+    <h2>Accept Ride</h2>
+    <input type="number" id="acceptDriverId" placeholder="Driver ID">
+    <input type="number" id="acceptRideId" placeholder="Ride ID">
+    <button onclick="acceptRide()">Accept</button>
+</div>
+
 <div class="card">
     <h2>Ride Status</h2>
     <input type="number" id="rideId" placeholder="Ride ID">
@@ -91,14 +106,57 @@
 
     async function createDriver() {
         const id = document.getElementById("driverId").value;
+        const name = document.getElementById("driverName").value;
+        const phone = document.getElementById("phone").value;
 
-        await fetch(`${BASE_URL}/v1/drivers`, {
+        const res = await fetch(`${BASE_URL}/v1/drivers`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ id: Number(id) })
+            body: JSON.stringify({
+                id: Number(id),
+                name: name,
+                phoneNumber: phone
+            })
         });
 
-        alert("Driver created");
+        const data = await res.json();
+        alert("Driver created: " + data.name);
+    }
+
+    async function getAllDrivers() {
+        const res = await fetch(`${BASE_URL}/v1/drivers`);
+        const drivers = await res.json();
+
+        const list = document.getElementById("driverList");
+        list.innerHTML = "";
+
+        if (drivers.length === 0) {
+            list.innerHTML = "<li>No drivers found</li>";
+            return;
+        }
+
+        drivers.forEach(d => {
+            const li = document.createElement("li");
+
+            li.innerText = `ID: ${d.id} | Name: ${d.name} | Phone: ${d.phoneNumber} | Status: ${d.status}`;
+
+            li.style.color =
+                d.status === "AVAILABLE" ? "green" :
+                    d.status === "BUSY" ? "orange" : "gray";
+
+            list.appendChild(li);
+        });
+    }
+
+    async function updateStatus() {
+        const id = document.getElementById("statusDriverId").value;
+        const status = document.getElementById("driverStatus").value;
+
+        await fetch(`${BASE_URL}/v1/drivers/${id}/status?status=${status}`, {
+            method: "POST"
+        });
+
+        alert("Status updated");
     }
 
     async function updateLocation() {
@@ -129,7 +187,19 @@
         });
 
         const ride = await res.json();
-        alert("Ride Created with ID: " + ride.id);
+        alert("Ride Created ID: " + ride.id);
+    }
+
+    async function acceptRide() {
+        const driverId = document.getElementById("acceptDriverId").value;
+        const rideId = document.getElementById("acceptRideId").value;
+
+        const res = await fetch(`${BASE_URL}/v1/drivers/${driverId}/accept?rideId=${rideId}`, {
+            method: "POST"
+        });
+
+        const text = await res.text();
+        alert("Result: " + text);
     }
 
     async function getRide() {
@@ -142,12 +212,9 @@
         document.getElementById("driver").innerText = data.driverId || "Not assigned";
     }
 
-    // 🔥 LIVE POLLING (every 2 sec)
     setInterval(() => {
         const rideId = document.getElementById("rideId").value;
-        if (rideId) {
-            getRide();
-        }
+        if (rideId) getRide();
     }, 2000);
 
 </script>
