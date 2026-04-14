@@ -172,6 +172,10 @@ POST /v1/payments - Make payment
 - Sequential dispatch ensures fairness
 - Atomic database updates prevent race conditions
 
+
+  ![Untitled Diagram](https://github.com/user-attachments/assets/69a25813-b993-402e-b5e3-e6f3be4b9af1)
+
+
 ---
 
 ## Author
