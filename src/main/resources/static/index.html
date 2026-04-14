@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ride Hailing App</title>
+    <style>
+        body {
+            font-family: Arial;
+            padding: 20px;
+            background: #f4f6f8;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        .card {
+            background: white;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        input, button {
+            padding: 8px;
+            margin: 5px;
+        }
+
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        #status {
+            font-weight: bold;
+            color: green;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>🚖 Ride Hailing Dashboard</h1>
+
+<!-- DRIVER CREATION -->
+<div class="card">
+    <h2>Create Driver</h2>
+    <input type="number" id="driverId" placeholder="Driver ID">
+    <button onclick="createDriver()">Create</button>
+</div>
+
+<!-- DRIVER LOCATION -->
+<div class="card">
+    <h2>Update Driver Location</h2>
+    <input type="number" id="locDriverId" placeholder="Driver ID">
+    <input type="number" id="lat" placeholder="Latitude">
+    <input type="number" id="lon" placeholder="Longitude">
+    <button onclick="updateLocation()">Update</button>
+</div>
+
+<!-- CREATE RIDE -->
+<div class="card">
+    <h2>Create Ride</h2>
+    <input type="number" id="riderId" placeholder="Rider ID">
+    <input type="number" id="pickupLat" placeholder="Pickup Lat">
+    <input type="number" id="pickupLon" placeholder="Pickup Lon">
+    <input type="number" id="dropLat" placeholder="Drop Lat">
+    <input type="number" id="dropLon" placeholder="Drop Lon">
+    <button onclick="createRide()">Create Ride</button>
+</div>
+
+<!-- RIDE STATUS -->
+<div class="card">
+    <h2>Ride Status</h2>
+    <input type="number" id="rideId" placeholder="Ride ID">
+    <button onclick="getRide()">Get Status</button>
+
+    <p>Status: <span id="status">-</span></p>
+    <p>Driver: <span id="driver">-</span></p>
+</div>
+
+<script>
+
+    const BASE_URL = "http://localhost:8080";
+
+    async function createDriver() {
+        const id = document.getElementById("driverId").value;
+
+        await fetch(`${BASE_URL}/v1/drivers`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id: Number(id) })
+        });
+
+        alert("Driver created");
+    }
+
+    async function updateLocation() {
+        const id = document.getElementById("locDriverId").value;
+        const lat = document.getElementById("lat").value;
+        const lon = document.getElementById("lon").value;
+
+        await fetch(`${BASE_URL}/v1/drivers/${id}/location?lat=${lat}&lon=${lon}`, {
+            method: "POST"
+        });
+
+        alert("Location updated");
+    }
+
+    async function createRide() {
+        const data = {
+            riderId: Number(document.getElementById("riderId").value),
+            pickupLat: Number(document.getElementById("pickupLat").value),
+            pickupLon: Number(document.getElementById("pickupLon").value),
+            dropLat: Number(document.getElementById("dropLat").value),
+            dropLon: Number(document.getElementById("dropLon").value)
+        };
+
+        const res = await fetch(`${BASE_URL}/v1/rides`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        });
+
+        const ride = await res.json();
+        alert("Ride Created with ID: " + ride.id);
+    }
+
+    async function getRide() {
+        const rideId = document.getElementById("rideId").value;
+
+        const res = await fetch(`${BASE_URL}/v1/rides/${rideId}`);
+        const data = await res.json();
+
+        document.getElementById("status").innerText = data.status;
+        document.getElementById("driver").innerText = data.driverId || "Not assigned";
+    }
+
+    // 🔥 LIVE POLLING (every 2 sec)
+    setInterval(() => {
+        const rideId = document.getElementById("rideId").value;
+        if (rideId) {
+            getRide();
+        }
+    }, 2000);
+
+</script>
+
+</body>
+</html>
