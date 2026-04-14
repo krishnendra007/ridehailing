@@ -27,7 +27,7 @@ public class DriverLocationService {
                         .radius(GEO_KEY,
                                 new Circle(
                                         new Point(lon, lat),
-                                        new Distance(5, Metrics.KILOMETERS)
+                                        new Distance(5000000, Metrics.MILES)
                                 ));
 
         return results.getContent()

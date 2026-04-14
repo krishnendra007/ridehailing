@@ -15,18 +15,12 @@ public class MatchingService {
     private final DriverLocationService locationService;
     private final DriverRepository driverRepository;
 
-    public Long findDriver(double lat, double lon) {
+    public List<Long> findDrivers(double lat, double lon) {
 
         List<String> nearbyDrivers = locationService.findNearbyDrivers(lat, lon);
 
-        for (String id : nearbyDrivers) {
-            Driver driver = driverRepository.findById(Long.valueOf(id)).orElse(null);
-
-            if (driver != null && driver.getStatus() == DriverStatus.AVAILABLE) {
-                return driver.getId();
-            }
-        }
-
-        return null;
+        return nearbyDrivers.stream()
+                .map(Long::valueOf)
+                .toList();
     }
 }

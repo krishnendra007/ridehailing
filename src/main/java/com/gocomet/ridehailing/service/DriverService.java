@@ -8,7 +8,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Duration;
 import java.util.List;
 
 @Service
@@ -20,13 +19,11 @@ public class DriverService {
     private final RedisTemplate<String, String> redisTemplate;
 
     public Driver createDriver(CreateDriverRequest request) {
-
         Driver driver = new Driver();
         driver.setId(request.getId());
         driver.setName(request.getName());
         driver.setPhoneNumber(request.getPhoneNumber());
         driver.setStatus(DriverStatus.AVAILABLE);
-
         return driverRepository.save(driver);
     }
 
@@ -39,35 +36,35 @@ public class DriverService {
     }
 
     public void updateStatus(Long driverId, DriverStatus status) {
-        Driver driver = driverRepository.findById(driverId).orElseThrow();
-        driver.setStatus(status);
-        driverRepository.save(driver);
+        driverRepository.updateDriverStatus(driverId, status);
     }
 
     @Transactional
     public boolean acceptRide(Long rideId, Long driverId) {
 
-        String lockKey = "lock:ride:" + rideId;
+        String current = redisTemplate.opsForValue()
+                .get("ride:current:" + rideId);
 
-        Boolean lockAcquired = redisTemplate.opsForValue()
-                .setIfAbsent(lockKey, driverId.toString(), Duration.ofSeconds(5));
-
-        if (Boolean.FALSE.equals(lockAcquired)) {
+        if (current == null || !current.equals(driverId.toString())) {
             return false;
         }
 
-        try {
-            int updated = rideRepository.assignDriver(rideId, driverId);
+        int updated = rideRepository.assignDriver(
+                rideId,
+                driverId,
+                RideStatus.MATCHED,
+                RideStatus.REQUESTED
+        );
 
-            if (updated == 1) {
-                driverRepository.markDriverBusy(driverId);
-                return true;
-            }
+        if (updated == 1) {
 
-            return false;
+            redisTemplate.delete("ride:current:" + rideId);
+            redisTemplate.delete("ride:queue:" + rideId);
+            redisTemplate.delete("lock:ride:" + rideId);
 
-        } finally {
-            redisTemplate.delete(lockKey);
+            return true;
         }
+
+        return false;
     }
 }

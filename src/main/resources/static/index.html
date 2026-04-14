@@ -39,7 +39,7 @@
 
 <body>
 
-<h1>🚖 Ride Hailing Dashboard</h1>
+<h1>Ride Hailing Dashboard</h1>
 
 <div class="card">
     <h2>Create Driver</h2>
@@ -95,9 +95,29 @@
     <h2>Ride Status</h2>
     <input type="number" id="rideId" placeholder="Ride ID">
     <button onclick="getRide()">Get Status</button>
-
     <p>Status: <span id="status">-</span></p>
     <p>Driver: <span id="driver">-</span></p>
+</div>
+
+<div class="card">
+    <h2>Current Driver for Ride</h2>
+    <input type="number" id="currentRideId" placeholder="Ride ID">
+    <button onclick="getCurrentDriver()">Check</button>
+    <p>Current Driver: <span id="currentDriver">-</span></p>
+</div>
+
+<div class="card">
+    <h2>End Trip</h2>
+    <input type="number" id="endRideId" placeholder="Ride ID">
+    <button onclick="endTrip()">End Trip</button>
+    <p>Fare: <span id="fare">-</span></p>
+</div>
+
+<div class="card">
+    <h2>Make Payment</h2>
+    <input type="number" id="paymentRideId" placeholder="Ride ID">
+    <button onclick="makePayment()">Pay</button>
+    <p id="paymentStatus">-</p>
 </div>
 
 <script>
@@ -129,11 +149,6 @@
 
         const list = document.getElementById("driverList");
         list.innerHTML = "";
-
-        if (drivers.length === 0) {
-            list.innerHTML = "<li>No drivers found</li>";
-            return;
-        }
 
         drivers.forEach(d => {
             const li = document.createElement("li");
@@ -187,7 +202,16 @@
         });
 
         const ride = await res.json();
+
+        document.getElementById("rideId").value = ride.id;
+        document.getElementById("currentRideId").value = ride.id;
+        document.getElementById("endRideId").value = ride.id;
+        document.getElementById("paymentRideId").value = ride.id;
+
         alert("Ride Created ID: " + ride.id);
+
+        await getRide();
+        await getCurrentDriver();
     }
 
     async function acceptRide() {
@@ -200,22 +224,78 @@
 
         const text = await res.text();
         alert("Result: " + text);
+
+        await getRide();
+        await getCurrentDriver();
     }
 
     async function getRide() {
         const rideId = document.getElementById("rideId").value;
 
+        if (!rideId) return;
+
         const res = await fetch(`${BASE_URL}/v1/rides/${rideId}`);
+
+        if (!res.ok) {
+            document.getElementById("status").innerText = "Ride not found";
+            document.getElementById("driver").innerText = "-";
+            return;
+        }
+
         const data = await res.json();
 
         document.getElementById("status").innerText = data.status;
         document.getElementById("driver").innerText = data.driverId || "Not assigned";
     }
 
-    setInterval(() => {
-        const rideId = document.getElementById("rideId").value;
-        if (rideId) getRide();
-    }, 2000);
+    async function getCurrentDriver() {
+        const rideId = document.getElementById("currentRideId").value;
+
+        if (!rideId) return;
+
+        const res = await fetch(`${BASE_URL}/v1/rides/${rideId}/current-driver`);
+        const data = await res.json();
+
+        if (!data.hasDriver) {
+            document.getElementById("currentDriver").innerText = "No active driver";
+        } else {
+            document.getElementById("currentDriver").innerText = data.currentDriverId;
+        }
+    }
+
+    async function endTrip() {
+        const rideId = document.getElementById("endRideId").value;
+
+        if (!rideId) return;
+
+        const res = await fetch(`${BASE_URL}/v1/trips/${rideId}/end`, {
+            method: "POST"
+        });
+
+        if (!res.ok) {
+            alert("Failed to end trip");
+            return;
+        }
+
+        const data = await res.json();
+        document.getElementById("fare").innerText = data.fare;
+
+        await getRide();
+        await getCurrentDriver();
+    }
+
+    async function makePayment() {
+        const rideId = document.getElementById("paymentRideId").value;
+
+        if (!rideId) return;
+
+        const res = await fetch(`${BASE_URL}/v1/payments?rideId=${rideId}`, {
+            method: "POST"
+        });
+
+        const text = await res.text();
+        document.getElementById("paymentStatus").innerText = text;
+    }
 
 </script>
 
